@@ -31,7 +31,7 @@
 </div>
 
 <script>
-const apiKey = "YOUR_API_KEY_HERE";
+const apiKey = "59515b6c56df02c501d971623d90bd57";
 
 function getWindDirection(deg) {
     const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
@@ -70,7 +70,7 @@ function getWeather(lat, lon) {
             `;
         })
         .catch(() => {
-            document.getElementById("weather").innerHTML = "Failed to load weather data.";
+            document.getElementById("weather").innerHTML = "Failed to load weather data :(";
         });
 }
 
@@ -90,11 +90,14 @@ if (navigator.geolocation) {
 } else {
     document.getElementById("weather").innerHTML = "Geolocation not supported.";
 }
+
+
+
 </script>
 
 <!-- Google Maps API (replace YOUR_GOOGLE_MAPS_API_KEY) -->
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPfpONSMdU1XMRwU37k0qE3EgFkp7KlE&callback=initMap">
 </script>
 
 </body>
