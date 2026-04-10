@@ -20,7 +20,7 @@
 
 <div class="container py-5">
     <div class="card shadow p-4">
-        <h2 class="text-center mb-4">🌤 Weather App</h2>
+        <h2 class="text-center mb-4">Weather App</h2>
 
         <div id="weather" class="text-center">
             <p>Loading location and weather...</p>
@@ -38,10 +38,11 @@ function getWindDirection(deg) {
     return directions[Math.round(deg / 45) % 8];
 }
 
-function initMap(lat, lon) {
+function initMap(lat, lon, accuracy) {
     const location = { lat: lat, lng: lon };
+
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 10,
+        zoom: 15,
         center: location,
     });
 
@@ -49,9 +50,22 @@ function initMap(lat, lon) {
         position: location,
         map: map,
     });
+
+    // Accuracy circle
+    new google.maps.Circle({
+        center: location,
+        radius: accuracy,
+        map: map,
+        fillColor: "#4285F4",
+        fillOpacity: 0.2,
+        strokeColor: "#4285F4",
+        strokeOpacity: 0.5,
+        strokeWeight: 1
+    });
 }
 
-function getWeather(lat, lon) {
+
+function getWeather(lat, lon, accuracy) {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
 
     fetch(url)
@@ -63,11 +77,12 @@ function getWeather(lat, lon) {
             const windDir = getWindDirection(data.wind.deg);
 
             document.getElementById("weather").innerHTML = `
-                <h4>${data.name}</h4>
-                <p><strong>Temperature:</strong> ${temp} °C</p>
-                <p><strong>Weather:</strong> ${description}</p>
-                <p><strong>Wind:</strong> ${windSpeed} m/s (${windDir})</p>
-            `;
+    <h4>${data.name}</h4>
+    <p><strong>Temperature:</strong> ${temp} °C</p>
+    <p><strong>Weather:</strong> ${description}</p>
+    <p><strong>Wind:</strong> ${windSpeed} m/s (${windDir})</p>
+    <p><strong>Location accuracy:</strong> ±${Math.round(accuracy)} meters</p>
+`;
         })
         .catch(() => {
             document.getElementById("weather").innerHTML = "Failed to load weather data :(";
@@ -76,17 +91,24 @@ function getWeather(lat, lon) {
 
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-        position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+    position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
 
-            getWeather(lat, lon);
-            initMap(lat, lon);
-        },
-        () => {
-            document.getElementById("weather").innerHTML = "Location access denied.";
-        }
-    );
+        getWeather(lat, lon, accuracy);
+        initMap(lat, lon, accuracy);
+    },
+    () => {
+        document.getElementById("weather").innerHTML = "Location access denied.";
+    },
+    {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+    }
+);
+    
 } else {
     document.getElementById("weather").innerHTML = "Geolocation not supported.";
 }
