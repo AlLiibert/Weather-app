@@ -5,18 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Weather App</title>
 
-    <!-- Bootstrap CSS -->
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        
         #map {
             height: 300px;
             width: 100%;
             border-radius: 10px;
         }
+        body {
+    background: linear-gradient(135deg, #1a0033, #3b0a63);
+    min-height: 100vh;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 15px;
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.2);
+}
     </style>
 </head>
-<body class="bg-light">
+<body class="text-white">
 
 <div class="container py-5">
     <div class="card shadow p-4">
@@ -51,7 +70,7 @@ function initMap(lat, lon, accuracy) {
         map: map,
     });
 
-    // Accuracy circle
+  
     new google.maps.Circle({
         center: location,
         radius: accuracy,
@@ -117,7 +136,7 @@ if (navigator.geolocation) {
 
 </script>
 
-<!-- Google Maps API (replace YOUR_GOOGLE_MAPS_API_KEY) -->
+
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiPfpONSMdU1XMRwU37k0qE3EgFkp7KlE&callback=initMap">
 </script>
